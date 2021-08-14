@@ -1,11 +1,13 @@
-const express = require('express')
-const manager = require('./data/manager/cloud.manager')
 const bodyParser = require('./middleware/plugins/body-parser.plugin')
 const corsConfig = require('./middleware/plugins/cors.plugin')
 const cookieParser = require('./middleware/plugins/cookie-parser.plugin')
 const errorHandler = require('./middleware/plugins/error-handler.plugin')
 const router = require('./api/router')
 const env = require('./environment')
+
+
+import express from 'express'
+import { cloudManager } from './data/manager'
 
 
 const app = express()
@@ -22,7 +24,7 @@ app.use(errorHandler)
 // Run
 async function start() {
     try {
-        await manager.connect()
+        await cloudManager.connect()
         console.log('Database is connected')
         await app.listen(env.PORT, env.HOST)
         console.log(`Server is listening on address http://${ env.HOST }:${ env.PORT }`)
