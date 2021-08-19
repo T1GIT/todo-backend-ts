@@ -1,5 +1,5 @@
-const categoryService = require('../../data/service/category.service')
-const taskService = require('../../data/service/task.service')
+const categoryService = require('../../data/old_service/category.service')
+const taskService = require('../../data/old_service/task.service')
 const _ = require('lodash')
 const { NotFound } = require("../../util/http-error");
 

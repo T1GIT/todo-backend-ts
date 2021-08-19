@@ -1,4 +1,4 @@
-const categoryService = require('../../data/service/category.service')
+const categoryService = require('../../data/old_service/category.service')
 const _ = require('lodash')
 
 

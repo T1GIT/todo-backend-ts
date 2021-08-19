@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     KEY_LENGTH: {
         REFRESH: 50,
         SALT: 12

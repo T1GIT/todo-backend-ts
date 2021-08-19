@@ -5,7 +5,7 @@ const adminRouter = require('./admin.router')
 const categoryRouter = require('./category.router')
 const taskRouter = require('./task.router')
 const serviceRouter = require('./service.router')
-const authentication = require('../../middleware/plugins/authentication.plugin')
+const authentication = require('../../middleware/plugin/authentication.plugin')
 
 
 const router = express.Router()

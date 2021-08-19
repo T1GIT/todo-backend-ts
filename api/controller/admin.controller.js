@@ -1,5 +1,5 @@
-const userService = require('../../data/service/user.service')
-const sessionService = require('../../data/service/session.service')
+const userService = require('../../data/old_service/user.service')
+const sessionService = require('../../data/old_service/session.service')
 const _ = require('lodash')
 const path = require("path");
 const logConfig = require("../../util/logger/config");

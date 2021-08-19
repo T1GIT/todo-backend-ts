@@ -1,34 +1,35 @@
-const bodyParser = require('./middleware/plugins/body-parser.plugin')
-const corsConfig = require('./middleware/plugins/cors.plugin')
-const cookieParser = require('./middleware/plugins/cookie-parser.plugin')
-const errorHandler = require('./middleware/plugins/error-handler.plugin')
-const router = require('./api/router')
-const env = require('./environment')
+import { sequelize } from "./data"
+import express from "express"
+import { cookieParserPlugin, bodyParserPlugin, corsPlugin, errorHandlerPlugin } from "./middleware/plugin"
+import { PORT, HOST, VERSION } from "./environment"
+import User from "./data/model/User"
+import Session from "./data/model/Session"
+import _ from "lodash"
 
-
-import express from 'express'
-import { cloudManager } from './data/manager'
+// const router = require('./api/router')
 
 
 const app = express()
 
 // Plugins
-app.use(cookieParser, bodyParser, corsConfig)
+app.use(cookieParserPlugin, bodyParserPlugin, corsPlugin)
 
 // Routes
-app.use(`/api/${ env.VERSION }/`, router)
+// app.use(`/api/${VERSION}/`, router)
 
 // Error handler
-app.use(errorHandler)
+app.use(errorHandlerPlugin)
 
 // Run
 async function start() {
     try {
-        await cloudManager.connect()
-        console.log('Database is connected')
-        await app.listen(env.PORT, env.HOST)
-        console.log(`Server is listening on address http://${ env.HOST }:${ env.PORT }`)
+        await sequelize.authenticate()
+        await sequelize.sync({force: true})
+        console.log('Database has been connected')
+        await app.listen(parseInt(PORT), HOST)
+        console.log(`Server is listening on address http://${HOST}:${PORT}`)
     } catch (e) {
+        await sequelize.close()
         console.error(e)
     }
 }

@@ -1,5 +1,7 @@
-const dotenv = require('dotenv')
-const { NODE_ENV } = process.env
+import dotenv from 'dotenv'
+
+
+const {NODE_ENV} = process.env
 
 let path
 
@@ -15,19 +17,21 @@ switch (NODE_ENV) {
         break
 }
 
-dotenv.config({ path })
+dotenv.config({path})
 
 const {
     HOST, PORT,
-    DB_NAME, DB_USERNAME, DB_PASSWORD,
+    DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD,
     JWT_SECRET, COOKIE_SECRET,
     ACCEPT_ORIGIN,
-    VERSION } = process.env
+    VERSION
+} = process.env
 
-module.exports = {
+export {
     NODE_ENV,
-    HOST, PORT, VERSION,
+    HOST, PORT,
+    DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD,
     JWT_SECRET, COOKIE_SECRET,
-    DB_NAME, DB_USERNAME, DB_PASSWORD,
-    ACCEPT_ORIGIN
+    ACCEPT_ORIGIN,
+    VERSION
 }

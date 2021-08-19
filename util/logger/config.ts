@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     DIR: '.log',
     EXT: '.log'
 }

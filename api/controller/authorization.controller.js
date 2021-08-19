@@ -1,5 +1,5 @@
-const sessionService = require('../../data/service/session.service')
-const userService = require('../../data/service/user.service')
+const sessionService = require('../../data/old_service/session.service')
+const userService = require('../../data/old_service/user.service')
 const jwtProvider = require('../../security/provider/jwt.provider')
 const refreshProvider = require('../../security/provider/refresh.provider')
 const _ = require('lodash')
