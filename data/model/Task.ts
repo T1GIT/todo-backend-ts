@@ -1,5 +1,4 @@
 import { AllowNull, BelongsTo, Column, DataType, Default, ForeignKey, Model, Table } from "sequelize-typescript"
-import User from "./User"
 import Category from "./Category"
 
 
@@ -11,13 +10,15 @@ export interface TaskAttributes {
     categoryId: number
 }
 
+export type TaskCreationAttributes = Omit<TaskAttributes, 'completed'>
+
 export interface TaskAssociations {
     category: Category
 }
 
 @Table
 class Task
-    extends Model<TaskAttributes>
+    extends Model<TaskAttributes, TaskCreationAttributes>
     implements TaskAttributes, TaskAssociations {
 
     @Column

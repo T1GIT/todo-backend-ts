@@ -1,4 +1,4 @@
-import { Table, Column, HasMany, Index, Unique, DataType, Default, AllowNull, Model } from "sequelize-typescript";
+import { Table, Column, HasMany, Index, Unique, DataType, Default, AllowNull, Model, Scopes, DefaultScope } from "sequelize-typescript"
 import Session from "./Session";
 import _ from "lodash"
 import Category from "./Category"

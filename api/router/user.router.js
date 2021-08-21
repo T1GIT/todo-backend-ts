@@ -9,6 +9,7 @@ const router = express.Router()
 
 router.route('/')
     .get(
+        userValidator.getOne,
         errorHandlerFilter(
             userController.getOne))
     .patch(
@@ -16,6 +17,7 @@ router.route('/')
         errorHandlerFilter(
             userController.update))
     .delete(
+        userValidator.remove,
         errorHandlerFilter(
             userController.remove))
 

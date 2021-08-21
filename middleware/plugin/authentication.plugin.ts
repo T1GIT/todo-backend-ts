@@ -1,8 +1,9 @@
 import jwtProvider, { Payload } from "../../security/provider/jwt.provider"
 import { NextFunction, Request, Response } from "express"
+import * as core from "express-serve-static-core"
 
 
-export interface AuthRequest extends Request {
+export interface AuthRequest<ReqBody = any, ReqQuery = any> extends Request<any, any, ReqBody, ReqQuery> {
     readonly auth: Payload
 }
 

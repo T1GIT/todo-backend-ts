@@ -37,3 +37,9 @@ export class SessionError extends HttpError {
         super(401, 'SessionError', msg)
     }
 }
+
+export class AdminRights extends HttpError {
+    constructor(msg: string) {
+        super(403, 'AdminRights', msg)
+    }
+}

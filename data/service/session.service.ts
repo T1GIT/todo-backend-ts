@@ -26,29 +26,31 @@ export type SessionCleaner = {
 export type SessionService = {
     create(userId: number, fingerprint: string): Promise<Session>
     refresh(refresh: string, fingerprint: string): Promise<Session>
-    remove(refresh: string, fingerprint: string): Promise<void>
+    removeOne(refresh: string): Promise<void>
+    removeAll(): Promise<void>
+    removeByUserId(userId: number): Promise<void>
 }
 
 export const sessionCleaner: SessionCleaner = {
     async fingerprint(userId: number, fingerprint: string): Promise<void> {
         await Session.destroy({
-            where: {userId, fingerprint}
+            where: { userId, fingerprint }
         })
     },
     async outdated(): Promise<void> {
         await Session.destroy({
             where: {
-                expires: {[Op.lt]: new Date()}
+                expires: { [Op.lt]: new Date() }
             }
         })
     },
     async overflow(userId: number): Promise<void> {
         const sessions = await Session.findAll({
-            where: {userId}
+            where: { userId }
         })
         if (sessions.length > config.MAX_SESSIONS) {
             await Session.destroy({
-                where: {userId},
+                where: { userId },
                 limit: sessions.length - config.MAX_SESSIONS
             })
         }
@@ -70,7 +72,7 @@ const sessionService: SessionService = {
         if (!session)
             throw new SessionError("Can't find session with refresh " + refresh)
         if (session.fingerprint !== fingerprint)
-            throw new SessionError(`Fingerprint ${fingerprint} is invalid`)
+            throw new SessionError(`Fingerprint ${ fingerprint } is invalid`)
         if (session.expires < new Date())
             throw new SessionError('Session is expired')
         _.assign(session, {
@@ -79,15 +81,14 @@ const sessionService: SessionService = {
         })
         return session.save()
     },
-    async remove(refresh: string, fingerprint: string): Promise<void> {
-        const user = await Session.findByPk(refresh)
-        if (user)
-            await Session.destroy({
-                where: {
-                    userId: user.id,
-                    [Op.or]: [{fingerprint}, {refresh}]
-                }
-            })
+    async removeOne(refresh: string): Promise<void> {
+        await Session.destroy({ where: { refresh } })
+    },
+    async removeAll(): Promise<void> {
+        await Session.destroy({ truncate: true })
+    },
+    async removeByUserId(userId: number): Promise<void> {
+        await Session.destroy({ where: { userId } })
     }
 }
 

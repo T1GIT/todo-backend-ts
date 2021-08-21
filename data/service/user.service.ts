@@ -9,7 +9,7 @@ function findByEmail(email: string): Promise<User | null> {
 }
 
 export type RegisterForm = Pick<User,
-    'email' | 'psw' | 'name' | 'surname' | 'patronymic' | 'birthdate'>
+    'email' | 'psw' | 'name' | 'surname' | 'patronymic' | 'birthdate' | 'role'>
 
 export type LoginForm = Pick<User,
     'email' | 'psw'>
@@ -17,13 +17,21 @@ export type LoginForm = Pick<User,
 export type UpdateForm = Partial<RegisterForm>
 
 export type UserService = {
+    existsById(userId: number): Promise<boolean>
+    getById(userId: number): Promise<User | null>
     create(user: RegisterForm): Promise<User>
     authorize(user: LoginForm): Promise<User>
-    update(userId: number, user: RegisterForm): Promise<void>
+    update(userId: number, user: UpdateForm): Promise<void>
     remove(userId: number): Promise<void>
 }
 
 const userService: UserService = {
+    async existsById(userId: number): Promise<boolean> {
+        return !!await User.findByPk(userId) !== null
+    },
+    getById(userId: number): Promise<User | null> {
+        return User.findByPk(userId)
+    },
     async create(user: RegisterForm): Promise<User> {
         const {email, psw} = user
         if (await findByEmail(email))
@@ -56,3 +64,6 @@ const userService: UserService = {
             await foundUser.destroy()
     }
 }
+
+
+export default userService

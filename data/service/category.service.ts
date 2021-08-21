@@ -11,38 +11,47 @@ import Category, { CategoryAttributes } from "../model/Category"
 export type CategoryForm = Pick<Category, 'name'>
 
 export type CategoryService = {
+    existsByUserIdAndId(userId: number, categoryId: number): Promise<boolean>
     getById(categoryId: number): Promise<Category | null>
-    getByUserId(userId: number): Promise<Category[]>
+    getByUserId(userId: number, offset: number, limit: number): Promise<Category[]>
     create(userId: number, category: CategoryForm): Promise<Category>
     update(categoryId: number, category: CategoryForm): Promise<void>
     remove(categoryId: number): Promise<void>
 }
 
 const categoryService: CategoryService = {
-    getById(categoryId: number): Promise<Category | null> {
+    async existsByUserIdAndId(userId, categoryId) {
+        const category = await Category.findByPk(categoryId)
+        if (category)
+            return category.userId === userId
+        else
+            return false
+    },
+    getById(categoryId) {
         return Category.findByPk(categoryId)
     },
-    getByUserId(userId: number): Promise<Category[]> {
+    getByUserId(userId, offset = 0, limit = Infinity) {
         return Category.findAll({
-            where: {userId}
+            where: { userId },
+            offset, limit
         })
     },
-    create(userId: number, category: CategoryForm): Promise<Category> {
+    create(userId, category) {
         return Category.create({
             userId,
             ...category
         })
     },
-    async update(categoryId: number, category: CategoryForm): Promise<void> {
+    async update(categoryId, category) {
         const foundCategory = await Category.findByPk(categoryId)
         _.assign(foundCategory, category)
-         await foundCategory.save()
+        await foundCategory.save()
     },
-    async remove(categoryId: number): Promise<void> {
+    async remove(categoryId) {
         const category = await Category.findByPk(categoryId)
         if (category)
             await category.destroy()
-    },
+    }
 }
 
 

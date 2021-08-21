@@ -9,32 +9,44 @@ import Category, { CategoryAttributes } from "../model/Category"
 import Task from "../model/Task"
 
 
-export type TaskForm = Pick<Task, 'title' | 'description' | 'completed'>
+export type TaskCreateForm = Pick<Task, 'title' | 'description'>
+
+export type TaskUpdateForm = Pick<Task, 'title' | 'description' | 'completed'>
 
 export type TaskService = {
+    existsByCategoryIdAndId(categoryId: number, taskId: number): Promise<boolean>
     getById(categoryId: number): Promise<Task | null>
-    getByCategoryId(userId: number): Promise<Task[]>
-    create(categoryId: number, task: TaskForm): Promise<Task>
-    update(taskId: number, task: TaskForm): Promise<void>
+    getByCategoryId(userId: number, offset?: number, limit?: number): Promise<Task[]>
+    create(categoryId: number, task: TaskUpdateForm): Promise<Task>
+    update(taskId: number, task: TaskUpdateForm): Promise<void>
     remove(taskId: number): Promise<void>
 }
 
 const taskService: TaskService = {
+    async existsByCategoryIdAndId(categoryId: number, taskId: number): Promise<boolean> {
+        const task = await Task.findByPk(taskId)
+        if (task) {
+            return task.categoryId === categoryId
+        } else {
+            return false
+        }
+    },
     getById(taskId: number): Promise<Task | null> {
         return Task.findByPk(taskId)
     },
-    getByCategoryId(categoryId: number): Promise<Task[]> {
+    getByCategoryId(categoryId: number, offset: number = 0, limit: number = Infinity): Promise<Task[]> {
         return Task.findAll({
-            where: {categoryId}
+            where: {categoryId},
+            offset, limit
         })
     },
-    create(categoryId: number, task: TaskForm): Promise<Task> {
+    create(categoryId: number, task: TaskCreateForm): Promise<Task> {
         return Task.create({
             categoryId,
             ...task
         })
     },
-    async update(taskId: number, task: TaskForm): Promise<void> {
+    async update(taskId: number, task: TaskUpdateForm): Promise<void> {
         const {completed} = task
         const foundTask = await Task.findByPk(taskId)
         _.assign(foundTask, task)

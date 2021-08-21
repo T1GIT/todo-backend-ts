@@ -1,11 +1,5 @@
-import authenticationPlugin from "./authentication.plugin"
-import bodyParserPlugin from "./body-parser.plugin"
-import cookieParserPlugin from "./cookie-parser.plugin"
-import corsPlugin from "./cors.plugin"
-import errorHandlerPlugin from "./error-handler.plugin"
-
-
-export {
-    authenticationPlugin, bodyParserPlugin,
-    cookieParserPlugin, corsPlugin, errorHandlerPlugin
-}
+export * from './authentication.plugin'
+export * from './body-parser.plugin'
+export * from './cookie-parser.plugin'
+export * from './cors.plugin'
+export * from './error-handler.plugin'
