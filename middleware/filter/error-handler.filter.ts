@@ -35,19 +35,21 @@ function createValidationError(result: Result<FieldError>): ResponseError {
     }
 }
 
-function createRuntimeError(err: (Error | HttpError) & {code?: number}): ResponseError {
+function createRuntimeError(e: (Error | HttpError) & {code?: number}): ResponseError {
+    if (NODE_ENV !== 'production')
+        console.error(e)
     let code: number
-    if (err instanceof HttpError) {
-        code = err.code
-    } else if (err instanceof JsonWebTokenError) {
+    if (e instanceof HttpError) {
+        code = e.code
+    } else if (e instanceof JsonWebTokenError) {
         code = 401
-    } else if (err.name === 'ValidationError') {
+    } else if (e.name === 'ValidationError') {
         code = 422
     } else {
-        logger.error(err.stack.split('\n'))
+        logger.error(e.stack.split('\n'))
         code = 500
     }
-    const { name, message, stack } = err
+    const { name, message, stack } = e
     return {
         code, name,
         msg: message,
@@ -58,12 +60,12 @@ function createRuntimeError(err: (Error | HttpError) & {code?: number}): Respons
 }
 
 
-function errorHandlerFilter(handler: RequestHandler) {
+function errorHandlerFilter(handler: (req: Request, res: Response) => any) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             const validation = validationResult(req)
             if (validation.isEmpty()) {
-                await handler(req, res, next)
+                await handler(req, res)
             } else {
                 next(createValidationError(validation))
             }
@@ -74,4 +76,4 @@ function errorHandlerFilter(handler: RequestHandler) {
 }
 
 
-module.exports = errorHandlerFilter
+export default errorHandlerFilter

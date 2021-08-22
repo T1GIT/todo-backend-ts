@@ -1,7 +1,7 @@
 import userService from "../../data/service/user.service"
 import _ from "lodash"
-import { AuthRequest } from "../../middleware/plugin"
 import { Request, Response } from "express"
+import { AuthRequest } from "../../middleware/plugin/authentication.plugin"
 
 
 const fields = ['email', 'psw', 'name', 'surname', 'patronymic', 'birthdate']

@@ -1,13 +1,13 @@
-const express = require('express')
-const categoryController = require('../controller/category.controller')
-const errorHandlerFilter = require('../../middleware/filter/error-handler.filter')
-const categoryValidator = require('../validator/category.validator')
+import express from "express"
+import categoryValidator from "../validator/category.validator"
+import errorHandlerFilter from "../../middleware/filter/error-handler.filter"
+import categoryController, { categoryTool } from "../controller/category.controller"
 
 
-const router = express.Router()
+const categoryRouter = express.Router()
 
 
-router
+categoryRouter
     .route('/')
     .get(
         categoryValidator.getAll,
@@ -18,23 +18,23 @@ router
         errorHandlerFilter(
             categoryController.create))
 
-router
-    .use('/:categoryId',
-        categoryValidator.path)
+categoryRouter
     .route('/:categoryId')
     .get(
-        categoryController.check.exists,
+        categoryValidator.getOne,
+        categoryTool.exists,
         errorHandlerFilter(
             categoryController.getOne)
     )
     .patch(
-        categoryController.check.exists,
+        categoryTool.exists,
         categoryValidator.update,
         errorHandlerFilter(
             categoryController.update))
     .delete(
+        categoryValidator.remove,
         errorHandlerFilter(
             categoryController.remove))
 
 
-module.exports = router
+export default categoryRouter

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express"
-import { AuthRequest } from "../../middleware/plugin"
 import userService from "../../data/service/user.service"
 import { AdminRights, NotFound } from "../../util/http-error"
 import { Role } from "../../data/model/User"
@@ -7,6 +6,7 @@ import sessionService, { sessionCleaner } from "../../data/service/session.servi
 import path from "path"
 import config from "../../util/logger/config"
 import * as fs from "fs"
+import { AuthRequest } from "../../middleware/plugin/authentication.plugin"
 
 
 export type AdminTool = Record<'adminRights' | 'logExists',
@@ -34,7 +34,7 @@ export const adminTool: AdminTool = {
     }
 }
 
-export type AdminRequests = 'changeRole' | 'removeSessions' | 'getLog' | 'cleanOutdated' // TODO: new ver/ Add route
+export type AdminRequests = 'changeRole' | 'removeSessions' | 'getLog' | 'cleanOutdated'
 
 export type AdminController = Record<AdminRequests,
     (req: AuthRequest, res: Response) => Promise<void>>

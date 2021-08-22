@@ -1,5 +1,0 @@
-export * from './authentication.plugin'
-export * from './body-parser.plugin'
-export * from './cookie-parser.plugin'
-export * from './cors.plugin'
-export * from './error-handler.plugin'

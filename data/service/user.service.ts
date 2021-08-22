@@ -50,11 +50,11 @@ const userService: UserService = {
     },
     async update(userId: number, user: UpdateForm): Promise<void> {
         const {email, psw} = user
-        if (await findByEmail(email))
+        if (email && await findByEmail(email))
             throw new EmailAlreadyExists(email)
         const foundUser = await User.findByPk(userId)
         _.assign(foundUser, user)
-        if (!_.isUndefined(psw))
+        if (psw)
             foundUser.psw = await hashProvider.hash(psw)
         await foundUser.save()
     },

@@ -1,8 +1,8 @@
-import { AuthRequest } from "../../middleware/plugin"
 import { NextFunction, Response } from "express"
 import categoryService from "../../data/service/category.service"
 import _ from "lodash"
 import { NotFound } from "../../util/http-error"
+import { AuthRequest } from "../../middleware/plugin/authentication.plugin"
 
 
 const fields = ['name']

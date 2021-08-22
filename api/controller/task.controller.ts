@@ -1,9 +1,9 @@
-import { AuthRequest } from "../../middleware/plugin"
 import { NextFunction, Response } from "express"
 import taskService from "../../data/service/task.service"
 import { NotFound } from "../../util/http-error"
 import categoryService from "../../data/service/category.service"
 import _ from "lodash"
+import { AuthRequest } from "../../middleware/plugin/authentication.plugin"
 
 
 const createFields = ['title', 'description']
@@ -13,7 +13,7 @@ const updateFields = [...createFields, 'completed']
 export type TaskTool = Record<'exists',
     (req: AuthRequest, res: Response, next: NextFunction) => Promise<void>>
 
-export const categoryTool: TaskTool = {
+export const taskTool: TaskTool = {
     async exists(req, res, next) {
         const { auth: { userId } } = req
         const { categoryId, taskId } = req.params

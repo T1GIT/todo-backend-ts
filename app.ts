@@ -1,12 +1,13 @@
 import { sequelize } from "./data"
 import express from "express"
-import { cookieParserPlugin, bodyParserPlugin, corsPlugin, errorHandlerPlugin } from "./middleware/plugin"
-import { PORT, HOST, VERSION } from "./environment"
-import User from "./data/model/User"
-import Session from "./data/model/Session"
-import _ from "lodash"
-
-// const router = require('./api/router')
+import { HOST, PORT } from "./environment"
+import rootRouter from "./api/router"
+import cookieParserPlugin from "./middleware/plugin/cookie-parser.plugin"
+import bodyParserPlugin from "./middleware/plugin/body-parser.plugin"
+import corsPlugin from "./middleware/plugin/cors.plugin"
+import errorHandlerPlugin from "./middleware/plugin/error-handler.plugin"
+import serviceRouter from "./api/router/service.router"
+import config from "./config"
 
 
 const app = express()
@@ -15,7 +16,8 @@ const app = express()
 app.use(cookieParserPlugin, bodyParserPlugin, corsPlugin)
 
 // Routes
-// app.use(`/api/${VERSION}/`, router)
+app.use('/', serviceRouter)
+app.use(`/api/${config.VERSION}/`, rootRouter)
 
 // Error handler
 app.use(errorHandlerPlugin)
@@ -24,7 +26,7 @@ app.use(errorHandlerPlugin)
 async function start() {
     try {
         await sequelize.authenticate()
-        await sequelize.sync({force: true})
+        await sequelize.sync()
         console.log('Database has been connected')
         await app.listen(parseInt(PORT), HOST)
         console.log(`Server is listening on address http://${HOST}:${PORT}`)

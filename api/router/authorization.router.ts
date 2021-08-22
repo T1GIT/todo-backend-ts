@@ -1,19 +1,19 @@
-const express = require('express')
-const authorizationController = require('../controller/authorization.controller')
-const errorHandlerFilter = require('../../middleware/filter/error-handler.filter')
-const authorizationValidator = require('../validator/authorization.validator')
+import express from "express"
+import authorizationValidator from "../validator/authorization.validator"
+import errorHandlerFilter from "../../middleware/filter/error-handler.filter"
+import authorizationController from "../controller/authorization.controller"
 
 
-const router = express.Router()
+const authorizationRouter = express.Router()
 
 
-router
+authorizationRouter
     .post('/login',
         authorizationValidator.login,
         errorHandlerFilter(
             authorizationController.login))
 
-router.route('/')
+authorizationRouter.route('/')
     .post(
         authorizationValidator.register,
         errorHandlerFilter(
@@ -28,4 +28,4 @@ router.route('/')
             authorizationController.logout))
 
 
-module.exports = router
+export default authorizationRouter

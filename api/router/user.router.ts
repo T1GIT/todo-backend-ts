@@ -1,13 +1,13 @@
-const express = require('express')
-const userController = require('../controller/user.controller')
-const errorHandlerFilter = require('../../middleware/filter/error-handler.filter')
-const userValidator = require('../validator/user.validator')
+import express from "express"
+import userValidator from "../validator/user.validator"
+import errorHandlerFilter from "../../middleware/filter/error-handler.filter"
+import userController from "../controller/user.controller"
 
 
-const router = express.Router()
+const userRouter = express.Router()
 
 
-router.route('/')
+userRouter.route('/')
     .get(
         userValidator.getOne,
         errorHandlerFilter(
@@ -22,4 +22,4 @@ router.route('/')
             userController.remove))
 
 
-module.exports = router
+export default userRouter
