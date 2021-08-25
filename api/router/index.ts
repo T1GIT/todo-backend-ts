@@ -17,7 +17,7 @@ rootRouter
         authenticationPlugin, adminRouter)
     .use('/user',
         authenticationPlugin, userRouter)
-    .use('/todo/categories',
+    .use('/todo',
         authenticationPlugin, categoryRouter, taskRouter)
 
 

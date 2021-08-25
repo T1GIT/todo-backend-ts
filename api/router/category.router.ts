@@ -8,7 +8,7 @@ const categoryRouter = express.Router()
 
 
 categoryRouter
-    .route('/')
+    .route('/categories')
     .get(
         categoryValidator.getAll,
         errorHandlerFilter(
@@ -19,7 +19,7 @@ categoryRouter
             categoryController.create))
 
 categoryRouter
-    .route('/:categoryId')
+    .route('category/:categoryId')
     .get(
         categoryValidator.getOne,
         categoryTool.exists,

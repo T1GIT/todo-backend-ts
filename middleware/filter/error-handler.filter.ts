@@ -17,7 +17,7 @@ export type FieldError = {
 export type ResponseError = {
     code: number,
     name: string,
-    msg: string,
+    message: string,
     fields?: Record<string, FieldError>,
     trace?: string[]
 }
@@ -30,7 +30,7 @@ function createValidationError(result: Result<FieldError>): ResponseError {
     return {
         code: 400,
         name: 'ValidationError',
-        msg: 'Request validation error',
+        message: 'Request validation error',
         fields: result.formatWith(formatter).mapped()
     }
 }
@@ -51,8 +51,7 @@ function createRuntimeError(e: (Error | HttpError) & {code?: number}): ResponseE
     }
     const { name, message, stack } = e
     return {
-        code, name,
-        msg: message,
+        code, name, message,
         trace: NODE_ENV !== 'production'
             ? stack.split('\n')
             : undefined
