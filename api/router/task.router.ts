@@ -8,9 +8,9 @@ import errorHandlerFilter from "../../middleware/filter/error-handler.filter"
 const taskRouter = express.Router()
 
 taskRouter
-    .use('/:categoryId/tasks',
+    .use('category/:categoryId/tasks',
         categoryTool.exists)
-    .route('/:categoryId/tasks')
+    .route('category/:categoryId/tasks')
     .get(
         taskValidator.getAll,
         errorHandlerFilter(
@@ -21,9 +21,9 @@ taskRouter
             taskController.create))
 
 taskRouter
-    .use('/:categoryId/tasks/:taskId',
+    .use('category/:categoryId/task/:taskId',
         categoryTool.exists)
-    .route('/:categoryId/tasks/:taskId')
+    .route('category/:categoryId/task/:taskId')
     .get(
         taskTool.exists,
         errorHandlerFilter(

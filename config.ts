@@ -1,3 +1,3 @@
 export default {
-    VERSION: "v4"
+    VERSION: "v5"
 }
