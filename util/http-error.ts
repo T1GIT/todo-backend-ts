@@ -22,7 +22,7 @@ export class EmailAlreadyExists extends HttpError {
 
 export class EmailNotExists extends HttpError {
     constructor(email: string) {
-        super(401, 'EmailNotExists', `${email} not found`)
+        super(404, 'EmailNotExists', `${email} not found`)
     }
 }
 
