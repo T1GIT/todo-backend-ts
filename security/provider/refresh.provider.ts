@@ -1,11 +1,11 @@
-import { HOST, PORT } from "../../environment"
+import { HOST } from "../../environment"
 import { CookieOptions, Request, Response } from "express"
 import config from "../config"
 import rootConfig from "../../config"
 
 
 export const cookieOptions: CookieOptions = {
-    domain: `${HOST}:${PORT}`,
+    domain: `${HOST}`,
     path: `/api/${rootConfig.VERSION}/authorization`,
     maxAge: config.EXPIRE_PERIOD.REFRESH * 24 * 3600 * 1000,
     httpOnly: true,

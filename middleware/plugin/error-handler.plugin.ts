@@ -1,6 +1,5 @@
 import { ResponseError } from "../filter/error-handler.filter"
 import { NextFunction, Request, Response } from "express"
-import { NODE_ENV } from "../../environment"
 
 
 const errorHandlerPlugin = async (
@@ -9,7 +8,7 @@ const errorHandlerPlugin = async (
     res: Response,
     next: NextFunction
 ): Promise<void> => {
-    res.status(error.code).json({error})
+    res.status(error.code).json(error)
 }
 
 
